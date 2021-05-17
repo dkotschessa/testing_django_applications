@@ -38,8 +38,12 @@ class Task(models.Model):
         Checks if a task is due soon.
         :return: True if task is due within two days. Otherwise, False.
         """
-        return bool(
-            self.complete_time < (timezone.now() - timezone.timedelta(days = 2)))
+        if self.complete_time is None:
+            due_soon = False
+        else:
+            due_soon = self.complete_time < (timezone.now() - timezone.timedelta(days = 2))
+        return bool(due_soon)
+            
 
     def mark_complete(self):
         """
